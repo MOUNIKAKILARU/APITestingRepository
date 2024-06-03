@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "ec0c67cc-6ae6-4e46-9b37-c48580dee7cb",
+		"name": "GoRestAPIValidation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35317954"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json=pm.response.json();\r",
+							"pm.globals.set(\"gorestid\",json.id);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var random= Math.random().toString(36).substring(2);\r",
+							"var randomgmail=\"jim\"+random+\"@gmail.com\";\r",
+							"var randomusername=\"jim\"+random;\r",
+							"\r",
+							"pm.environment.set(\"randomgmail_env\",randomgmail);\r",
+							"pm.environment.set(\"randomusername_env\",randomusername);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"{{randomusername_env}}\",\r\n\"gender\":\"male\", \r\n\"email\":\"{{randomgmail_env}}\",\r\n\"status\":\"active\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gorestschema}}/public/v2/users",
+					"host": [
+						"{{gorestschema}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsondata=pm.response.json();\r",
+							"pm.test(\"validate the value of fields that are used for creation\",()=>{\r",
+							"    pm.expect(jsondata.id).to.eql(pm.globals.get(\"gorestid\")),\r",
+							"    pm.expect(jsondata.name).to.eql(pm.environment.get(\"randomusername_env\")),\r",
+							"    pm.expect(jsondata.email).to.eql(pm.environment.get(\"randomgmail_env\"))\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{gorestschema}}/public/v2/users/{{gorestid}}",
+					"host": [
+						"{{gorestschema}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{gorestid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"{{randomusername_env}}\",\r\n\"gender\":\"male\", \r\n\"email\":\"{{randomgmail_env}}\",\r\n\"status\":\"active\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gorestschema}}/public/v2/users/{{gorestid}}",
+					"host": [
+						"{{gorestschema}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{gorestid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.unset(\"gorestid\");\r",
+							"pm.environment.unset(\"randomgmail_env\");\r",
+							"pm.environment.unset(\"randomusername_env\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{gorestschema}}/public/v2/users/{{gorestid}}",
+					"host": [
+						"{{gorestschema}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{gorestid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "2bc876e7ecb49dcfa28717d475e19431bb15b58f6274c4a3fb6b639fb83b3421",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

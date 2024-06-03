@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "003e8991-529a-432a-a36c-8d7ff573e8d4",
+		"name": "DataDrivenTestingBooksAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35317954"
+	},
+	"item": [
+		{
+			"name": "submitorder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsondata=pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"orderId\",jsondata.orderId);\r",
+							"\r",
+							"pm.test(\"validate the status code of the response\",()=>{\r",
+							"    pm.response.to.have.status(201)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "c3ea780615e5d554bdf20b995a55a040400f806af235d9758d2718110edb93b0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": \"{{bookid}}\",\r\n  \"customerName\": \"{{customerName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{simplebooksapiurl}}/orders",
+					"host": [
+						"{{simplebooksapiurl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Toget1order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json=pm.response.json();\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate the value of fields that are used for creation\",()=>{\r",
+							"    \r",
+							"  \r",
+							"     pm.expect(json.id).to.eql(pm.environment.get(\"orderId\"))\r",
+							"\r",
+							"\r",
+							"})\r",
+							"pm.test(\"validate the status code of the response\",()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "c3ea780615e5d554bdf20b995a55a040400f806af235d9758d2718110edb93b0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"The Russian\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{simplebooksapiurl}}/orders/{{orderId}}",
+					"host": [
+						"{{simplebooksapiurl}}"
+					],
+					"path": [
+						"orders",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletetheorder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"//pm.environment.unset(\"orderId\");\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate the status code\",()=>{\r",
+							"    pm.response.to.have.status(204);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "c3ea780615e5d554bdf20b995a55a040400f806af235d9758d2718110edb93b0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{simplebooksapiurl}}/orders/{{orderId}}",
+					"host": [
+						"{{simplebooksapiurl}}"
+					],
+					"path": [
+						"orders",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "c3ea780615e5d554bdf20b995a55a040400f806af235d9758d2718110edb93b0",
+			"type": "string"
+		}
+	]
+}

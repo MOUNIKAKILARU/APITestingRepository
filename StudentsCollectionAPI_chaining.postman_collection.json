@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "2546063e-099c-478b-b041-7a3a92c40ac5",
+		"name": "StudentsCollectionAPI_chaining",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35317954"
+	},
+	"item": [
+		{
+			"name": "All Test Scripts",
+			"item": [
+				{
+					"name": "create 1 student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsondata =pm.response.json();\r",
+									"pm.environment.set(\"id\",jsondata.id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//local variables\r",
+									"pm.variables.set(\"url_local\",\"http://localhost:3000\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n       \r\n        \"name\": \"vamsi gangavarapu\",\r\n        \"location\": \"Brazil\",\r\n        \"phone_number\": 6468564421,\r\n        \"courses\": [\r\n            \"javascript\",\r\n            \"html\"\r\n           \r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_local}}/students",
+							"host": [
+								"{{url_local}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get 1 Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"script level prerequest\")\r",
+									"\r",
+									"//set global variables\r",
+									"pm.globals.set(\"student_id\",\"5\")\r",
+									"\r",
+									"//set environmental variable\r",
+									"pm.environment.set(\"student_id_env_qa\",\"3\")\r",
+									"\r",
+									"//collection variable\r",
+									"pm.collectionVariables.set(\"student_id_collection\",\"3\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/students/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"students",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/students/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"students",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"console.log(\"collection prequisite\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"console.log(\"test script at collection level\")"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url_collect",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "student_id_collection",
+			"value": ""
+		}
+	]
+}

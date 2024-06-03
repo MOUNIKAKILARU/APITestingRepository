@@ -1,0 +1,632 @@
+{
+	"info": {
+		"_postman_id": "1656592d-b2ba-436f-80c3-0146bf3c8beb",
+		"name": "StudentsCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35317954"
+	},
+	"item": [
+		{
+			"name": "All Test Scripts",
+			"item": [
+				{
+					"name": "Get 1 Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//to validate status code\r",
+									"pm.test(\"check whether status code is 200\",()=>{pm.response.to.have.status(200)});\r",
+									"//to validate the status code that should be there in an array\r",
+									"pm.test(\"status should be in one of this\",()=>{pm.expect(pm.response.code).to.have.oneOf([500,300,200,201])});\r",
+									"//to check status content\r",
+									"pm.test(\"check the status content\",()=>{pm.response.to.have.status(\"OK\")});\r",
+									"//to check whether the content-type field is present or not on headers\r",
+									"pm.test(\"check whether content type is present under headers section in response\",()=>{pm.response.to.have.header(\"content-type\")});\r",
+									"//to check whether the content type is equals to application/json\r",
+									"pm.test(\"check whether the value of content type is application/json or not\",()=>{pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json')});\r",
+									"//TO validate response time \r",
+									"pm.test(\"verify the respose time\",()=>{pm.expect(pm.response.responseTime).to.below(50)});\r",
+									"//test if cookie is present on the response\r",
+									"//pm.test(\"verify whether any cookies are present in the response\",()=>{pm.expect(pm.cookies.has(\"language\")).to.be.true});\r",
+									"//test for particular cookie value\r",
+									"//pm.test(\"check the value of the cookie\",()=>{pm.expect(pm.cookies.get(\"language\")).to.eql(\"en-gb\")});\r",
+									"//check whether all the fields in the response are in the given format\r",
+									"var jsondata = pm.response.json();\r",
+									"pm.test(\"check whether all the fields in the response are in the given format\",()=>{\r",
+									"    pm.expect(jsondata).to.be.an(\"object\");\r",
+									"    pm.expect(jsondata.id).to.be.a(\"string\");\r",
+									"    pm.expect(jsondata.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsondata.phone_number).to.be.a(\"number\");\r",
+									"    pm.expect(jsondata.courses).to.be.an(\"array\")\r",
+									"})\r",
+									"\r",
+									"//valildate whether the courses array consists of given string or not \r",
+									"pm.test(\"check whther the courses array consists of this particular value\"),()=>pm.expect(jsondata.courses).to.include(\"java\")\r",
+									"\r",
+									"//validate whether the courses array consits of all the elements that are mentioned here \r",
+									"pm.test(\"check whether all the listed values are present in courses array\"),()=>pm.expect(jsondata.courses).to.have.members(\"art\",\"music\");\r",
+									"\r",
+									"//test value of fields\r",
+									"pm.test(\"verify the value of fields\",()=>{\r",
+									"    pm.expect(jsondata.id).to.eql(\"5\"),\r",
+									"    pm.expect(jsondata.name).to.eql(\"Eva Green\"),\r",
+									"    pm.expect(jsondata.location).to.eql(\"Phoenix\"),\r",
+									"    pm.expect(jsondata.phone_number).to.eql(3332221111),\r",
+									"    pm.expect(jsondata.courses[2]).to.eql(\"Drama\")\r",
+									"})\r",
+									"\r",
+									"var schema ={\r",
+									"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"id\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"name\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"location\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"phone_number\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"courses\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": [\r",
+									"        {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"id\",\r",
+									"    \"name\",\r",
+									"    \"location\",\r",
+									"    \"phone_number\",\r",
+									"    \"courses\"\r",
+									"  ]\r",
+									"}\r",
+									"pm.test(\"validate the schema\",()=>{\r",
+									"    pm.expect(tv4.validate(jsondata,schema)).to.be.true;\r",
+									"})\r",
+									"\r",
+									"\r",
+									"\r",
+									"//set global variables\r",
+									"pm.globals.unset(\"student_id\")\r",
+									"\r",
+									"//set environmental variable\r",
+									"pm.environment.unset(\"student_id_env_qa\")\r",
+									"\r",
+									"//collection variable\r",
+									"pm.collectionVariables.unset(\"student_id_collection\")\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"script level prerequest\")\r",
+									"\r",
+									"//set global variables\r",
+									"pm.globals.set(\"student_id\",\"5\")\r",
+									"\r",
+									"//set environmental variable\r",
+									"pm.environment.set(\"student_id_env_qa\",\"3\")\r",
+									"\r",
+									"//collection variable\r",
+									"pm.collectionVariables.set(\"student_id_collection\",\"3\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/students/{{student_id_collection}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"students",
+								"{{student_id_collection}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all students",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"validate whether the status code is 200 or not\",()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"pm.test(\"validate whether the status code is there in one poof the array\",()=>{\r",
+									"    pm.expect(pm.response.code).to.have.oneOf([300,450,200])})\r",
+									"pm.test(\"validate the status content is ok or not\",()=>{ pm.response.to.have.status(\"OK\")\r",
+									"})\r",
+									"pm.test(\"validate whether content type field is present or not\",()=>{\r",
+									"    pm.response.to.have.header(\"content-type\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"validate the value of content tyep\",()=>{pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\")})\r",
+									"\r",
+									"pm.test(\"validate response time\",()=>{pm.expect(pm.response.responseTime).to.be.below(50)})\r",
+									"var jsondata=pm.response.json();\r",
+									"pm.test(\"test the format of the json\",()=>{\r",
+									"    pm.expect(jsondata[0]).to.be.an(\"object\"),\r",
+									"    pm.expect(jsondata[0].id).to.be.a(\"string\"),\r",
+									"    pm.expect(jsondata[0].name).to.be.a(\"string\"),\r",
+									"    pm.expect(jsondata[0].phone_number).to.be.a(\"number\"),\r",
+									"    pm.expect(jsondata[0].courses[0]).to.be.a(\"string\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"test whether the particular element is present in course array or not\",()=>pm.expect(jsondata[0].courses[0]).to.include(\"Biology\"));\r",
+									"pm.test(\"whether all the listed elements are present in array\",()=>{\r",
+									"    pm.expect(jsondata[0].courses).to.have.members([\"Biology\",\"English\",\"History\"])\r",
+									"})\r",
+									"pm.test(\"verification of each field\",()=>{\r",
+									"    pm.expect(jsondata[2].name).to.be.eql(\"David Wilson\"),\r",
+									"    pm.expect(jsondata[1].id).to.be.eql(\"3\"),\r",
+									"    pm.expect(jsondata[3].courses[2]).to.be.eql(\"Drama\")\r",
+									"})\r",
+									"var schema={\r",
+									"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+									"  \"type\": \"array\",\r",
+									"  \"items\": [\r",
+									"    {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"location\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"phone_number\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"courses\": {\r",
+									"          \"type\": \"array\",\r",
+									"          \"items\": [\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            }\r",
+									"          ]\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"name\",\r",
+									"        \"location\",\r",
+									"        \"phone_number\",\r",
+									"        \"courses\"\r",
+									"      ]\r",
+									"    },\r",
+									"    {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"location\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"phone_number\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"courses\": {\r",
+									"          \"type\": \"array\",\r",
+									"          \"items\": [\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            }\r",
+									"          ]\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"name\",\r",
+									"        \"location\",\r",
+									"        \"phone_number\",\r",
+									"        \"courses\"\r",
+									"      ]\r",
+									"    },\r",
+									"    {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"location\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"phone_number\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"courses\": {\r",
+									"          \"type\": \"array\",\r",
+									"          \"items\": [\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            }\r",
+									"          ]\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"name\",\r",
+									"        \"location\",\r",
+									"        \"phone_number\",\r",
+									"        \"courses\"\r",
+									"      ]\r",
+									"    },\r",
+									"    {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"location\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"phone_number\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"courses\": {\r",
+									"          \"type\": \"array\",\r",
+									"          \"items\": [\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"string\"\r",
+									"            }\r",
+									"          ]\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"name\",\r",
+									"        \"location\",\r",
+									"        \"phone_number\",\r",
+									"        \"courses\"\r",
+									"      ]\r",
+									"    }\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"pm.test(\"validate the json with schema\",()=>{\r",
+									"    pm.expect(tv4.validate(jsondata,schema)).to.be.true\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_collect}}/students",
+							"host": [
+								"{{url_collect}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating 1032 record",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"validate the status code\",()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"pm.test(\"validate whether the status code is present in the array of elements\",()=>{\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([500,201,200])\r",
+									"})\r",
+									"pm.test(\"validate the status content\",()=>\r",
+									"pm.response.to.have.status(\"OK\"))\r",
+									"pm.test(\"validate the response time\",()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(40)\r",
+									"})\r",
+									"pm.test(\"validate whether the content type field is present or not\",()=>\r",
+									"pm.response.to.have.header(\"Content-Type\"));\r",
+									"pm.test(\"validate whwther the correct value is there for content type field\",()=>{\r",
+									"pm.expect(pm.response.headers.get(\"Content-type\")).to.eql(\"application/json\")})\r",
+									"var jsondata=pm.response.json();\r",
+									"pm.test(\"validate the key format type in the object\",()=>{\r",
+									"    pm.expect(jsondata).to.be.an(\"object\"),\r",
+									"    pm.expect(jsondata.id).to.be.a(\"string\"),\r",
+									"    pm.expect(jsondata.phone_number).to.be.a(\"number\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"validate whether the array include particular element\",()=>{\r",
+									"    pm.expect(jsondata.courses[0]).to.be.include(\"Music\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"validate whether the metioned elements are present in array\",()=>\r",
+									"pm.expect(jsondata.courses).to.have.members([\"Music\",\"Drama\"]))\r",
+									"\r",
+									"pm.test(\"verify the value of fields\",()=>{\r",
+									"pm.expect(jsondata.name).to.eql(\"mounika gangavarapu\"),\r",
+									"pm.expect(jsondata.location).to.eql(\"New York\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": \"f2f5\",\r\n        \"name\": \"mounika gangavarapu\",\r\n        \"location\": \"New York\",\r\n        \"phone_number\": 1111111111,\r\n        \"courses\": [\r\n            \r\n            \"Music\",\r\n            \"Drama\"\r\n        ]\r\n        \r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Url_qa_env}}/students/f2f5",
+							"host": [
+								"{{Url_qa_env}}"
+							],
+							"path": [
+								"students",
+								"f2f5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"validate the status code\",()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"pm.test(\"validate whether the status code is present in the array of elements\",()=>{\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([500,201,200])\r",
+									"})\r",
+									"pm.test(\"validate the status content\",()=>\r",
+									"pm.response.to.have.status(\"OK\"))\r",
+									"pm.test(\"validate the response time\",()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(40)\r",
+									"})\r",
+									"pm.test(\"validate whether the content type field is present or not\",()=>\r",
+									"pm.response.to.have.header(\"Content-Type\"));\r",
+									"pm.test(\"validate whwther the correct value is there for content type field\",()=>{\r",
+									"pm.expect(pm.response.headers.get(\"Content-type\")).to.eql(\"application/json\")})\r",
+									"var jsondata=pm.response.json();\r",
+									"pm.test(\"validate the key format type in the object\",()=>{\r",
+									"    pm.expect(jsondata).to.be.an(\"object\"),\r",
+									"    pm.expect(jsondata.id).to.be.a(\"string\"),\r",
+									"    pm.expect(jsondata.phone_number).to.be.a(\"number\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"validate whether the array include particular element\",()=>{\r",
+									"    pm.expect(jsondata.courses[0]).to.be.include(\"Music\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"validate whether the metioned elements are present in array\",()=>\r",
+									"pm.expect(jsondata.courses).to.have.members([\"Music\",\"Drama\"]))\r",
+									"\r",
+									"pm.test(\"verify the value of fields\",()=>{\r",
+									"pm.expect(jsondata.name).to.eql(\"mounika gangavarapu\"),\r",
+									"pm.expect(jsondata.location).to.eql(\"New York\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/students/2",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"students",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create 1 student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"validate the response code\",()=>{\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"pm.test(\"validate the response code in few of the given elements\",()=>{\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([450,201,300])\r",
+									"})\r",
+									"pm.test(\"validate the status content\",()=>\r",
+									"{\r",
+									"    pm.response.to.have.status(\"Created\")\r",
+									"})\r",
+									"pm.test(\"validate whether content type field is present or not\",()=>{\r",
+									"    pm.response.to.have.header(\"content-type\")\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"validate the value of content type field in headers\",()=>{pm.expect(pm.response.headers.get(\"Content-Type\")).to.be.eql(\"application/json\")})\r",
+									"\r",
+									"pm.test(\"validate the response time\",()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(50)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//local variables\r",
+									"pm.variables.set(\"url_local\",\"http://localhost:3000\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n       \r\n        \"name\": \"sai kilaru\",\r\n        \"location\": \"India\",\r\n        \"phone_number\": 665544664421,\r\n        \"courses\": [\r\n            \"Selenium\",\r\n            \"Java\"\r\n           \r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_local}}/students",
+							"host": [
+								"{{url_local}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"console.log(\"folder level preprequest script\")"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"console.log(\"post response at folder level\")"
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"console.log(\"collection prequisite\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"console.log(\"test script at collection level\")"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url_collect",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
